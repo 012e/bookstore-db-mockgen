@@ -22,7 +22,7 @@ func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount 
 func insertInvoice(invoiceId int, employeeCount int) *sqlbuilder.InsertBuilder {
 	invoicesBuilder := sqlbuilder.PostgreSQL.NewInsertBuilder().
 		InsertInto("invoices").
-		Cols("invoice_id", "total", "employee_id")
+		Cols("id", "total", "employee_id")
 	employeeId := Number(1, employeeCount)
 	// TODO: add correct value
 	total := Price(1000, 10000)
