@@ -15,6 +15,7 @@ var (
 	invoiceCount  = 50
 	tagCount      = 10
 	providerCount = 5
+	customerCount = 50
 )
 
 func init() {
@@ -42,7 +43,8 @@ func main() {
 	InsertTags(tx)
 	InsertItemsTags(tx, itemCount, tagCount)
 	InsertEmployees(tx, employeeCount)
-	InsertInvoices(tx, invoiceCount, itemCount, employeeCount)
+	InsertCustomers(tx, customerCount)
+	InsertInvoices(tx, invoiceCount, itemCount, employeeCount, customerCount)
 
 	tx.Commit()
 	defer db.Close()

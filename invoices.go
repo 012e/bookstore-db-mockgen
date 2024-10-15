@@ -6,10 +6,9 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount int) {
+func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount int, customerCount int) {
 	for i := range invoiceCount {
-
-		invoicesBuilder := insertInvoice(i+1, employeeCount)
+		invoicesBuilder := insertInvoice(i+1, employeeCount, customerCount)
 		sql, args := invoicesBuilder.Build()
 		tx.MustExec(sql, args...)
 
@@ -19,15 +18,16 @@ func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount 
 	}
 }
 
-func insertInvoice(invoiceId int, employeeCount int) *sqlbuilder.InsertBuilder {
+func insertInvoice(invoiceId int, employeeCount int, customerCount int) *sqlbuilder.InsertBuilder {
 	invoicesBuilder := sqlbuilder.PostgreSQL.NewInsertBuilder().
 		InsertInto("invoices").
-		Cols("id", "total", "employee_id")
+		Cols("id", "total", "employee_id", "customer_id")
 	employeeId := Number(1, employeeCount)
+	customerId := Number(1, customerCount)
 	// TODO: add correct value
 	total := Price(1000, 10000)
 
-	invoicesBuilder.Values(invoiceId, total, employeeId)
+	invoicesBuilder.Values(invoiceId, total, employeeId, customerId)
 	return invoicesBuilder
 }
 
