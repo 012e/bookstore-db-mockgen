@@ -7,6 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -19,6 +20,8 @@ var (
 )
 
 func init() {
+	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetOutput(os.Stdout)
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -31,19 +34,34 @@ func main() {
 		panic(err)
 	}
 
+	logrus.Info("Pinging database")
+	err = db.Ping()
+	if err != nil {
+		logrus.Fatal("can't ping database")
+	}
+
+	logrus.Info("cleaning up database")
 	CleanUp(db)
+	logrus.Info("running schema script")
 	InitSchema(db)
 
 	tx, err := db.Beginx()
 	if err != nil {
 		panic(err)
 	}
+	logrus.Info("inserting providers")
 	InsertProviders(tx)
+	logrus.Info("inserting items")
 	InsertItems(tx, itemCount)
+	logrus.Info("inserting tags")
 	InsertTags(tx)
+	logrus.Info("inserting tags for items")
 	InsertItemsTags(tx, itemCount, tagCount)
+	logrus.Info("inserting employees")
 	InsertEmployees(tx, employeeCount)
+	logrus.Info("inserting customers")
 	InsertCustomers(tx, customerCount)
+	logrus.Info("inserting invoices")
 	InsertInvoices(tx, invoiceCount, itemCount, employeeCount, customerCount)
 
 	tx.Commit()
