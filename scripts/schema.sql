@@ -48,13 +48,6 @@ create table customers
     email           varchar(255) not null
 );
 
-create table providers_items
-(
-    item_id     integer references items(id) on delete cascade,
-    provider_id integer references  providers(id) on delete cascade,
-    primary key (item_id, provider_id)
-);
-
 -- Hoa don
 create table invoices
 (
