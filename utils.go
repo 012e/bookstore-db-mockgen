@@ -4,7 +4,6 @@ import (
 	_ "embed"
 
 	"github.com/brianvoe/gofakeit/v7"
-	"github.com/huandu/go-sqlbuilder"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -13,10 +12,6 @@ var cleanUpSQL string
 
 //go:embed scripts/schema.sql
 var schemaSQL string
-
-func getRandomPostgresImg() interface{} {
-	return sqlbuilder.Raw("'porn'")
-}
 
 func CleanUp(db *sqlx.DB) {
 	db.MustExec(cleanUpSQL)
@@ -45,4 +40,8 @@ func getRandomDistinctIntSlice(count int, min int, max int) []int {
 	}
 
 	return result
+}
+
+func GetRandomImage() string {
+	return "https://fastly.picsum.photos/id/591/200/200.jpg?hmac=5agpVWsRchY0DObXs23vYWjjgqLZEBhqSvTwfCAcyng"
 }
