@@ -16,12 +16,12 @@ var itemsTxt string
 func InsertItems(db *sqlx.Tx, count int) {
 	builder := sqlbuilder.PostgreSQL.NewInsertBuilder()
 	builder.InsertInto("items").
-		Cols("name", "image", "description", "quantity", "price", "provider_id")
+		Cols("name", "image", "description", "quantity", "provider_id")
 	for range count {
 		loremCount := Number(10, 50)
 		quan := Number(1, 100)
 		provider := Number(1, 5)
-		builder.Values(getRandomItem(), GetRandomImage(), LoremIpsumSentence(loremCount), quan, Price(1, 100), provider)
+		builder.Values(getRandomItem(), GetRandomImage(), LoremIpsumSentence(loremCount), quan, provider)
 	}
 	sql, args := builder.Build()
 	_, err := db.Exec(sql, args...)

@@ -11,12 +11,14 @@ import (
 )
 
 var (
-	employeeCount = 30
-	itemCount     = 100
-	invoiceCount  = 50
-	tagCount      = 10
-	providerCount = 5
-	customerCount = 50
+	employeeCount   = 30
+	itemCount       = 100
+	invoiceCount    = 50
+	tagCount        = 10
+	providerCount   = 5
+	customerCount   = 50
+	importCount     = 50
+	importItemCount = 100
 )
 
 func init() {
@@ -63,6 +65,14 @@ func main() {
 	InsertCustomers(tx, customerCount)
 	logrus.Info("inserting invoices")
 	InsertInvoices(tx, invoiceCount, itemCount, employeeCount, customerCount)
+	logrus.Info("inserting imports")
+	InsertImports(tx, importCount, providerCount)
+	logrus.Info("inserting items for imports")
+	InsertImportItems(tx, importItemCount, importCount, itemCount)
+	logrus.Info("inserting price types")
+	InsertPriceTypes(tx)
+	logrus.Info("inserting price")
+	InsertPrice(tx, itemCount)
 
 	tx.Commit()
 	defer db.Close()
