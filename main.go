@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"os"
 
+	"github.com/brianvoe/gofakeit/v7"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -31,6 +33,11 @@ func init() {
 }
 
 func main() {
+	rand.Seed(696969)
+	err := gofakeit.Seed(69696)
+	if err != nil {
+		panic(err)
+	}
 	db, err := sqlx.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		panic(err)
