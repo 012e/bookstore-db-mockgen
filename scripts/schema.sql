@@ -7,7 +7,8 @@ create table employees
     email           varchar(255) not null,
     salary          money        not null check (salary > 0::money),
     profile_picture text         not null,
-    is_manager      boolean      not null default false
+    is_manager      boolean      not null default false,
+    password        varchar(255) not null
 );
 
 -- Bang cac nha cung cap
