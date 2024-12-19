@@ -8,10 +8,11 @@ import (
 
 func InsertImports(db *sqlx.Tx, importsCount int, providerCount int) {
 	builder := sqlbuilder.PostgreSQL.NewInsertBuilder()
-	builder.InsertInto("imports").Cols("provider_id")
+	builder.InsertInto("imports").Cols("provider_id", "total_cost")
 	for _ = range importsCount {
 		randomProvider := Number(1, providerCount)
-		builder.Values(randomProvider)
+		cost := Float64Range(1_000_000, 100_000_000)
+		builder.Values(randomProvider, cost)
 	}
 	sql, args := builder.Build()
 	_, err := db.Exec(sql, args...)
