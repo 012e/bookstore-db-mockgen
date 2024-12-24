@@ -19,7 +19,7 @@ var (
 	tagCount        = 10
 	providerCount   = 5
 	customerCount   = 50
-	importCount     = 50
+	importCount     = 30
 	importItemCount = 100
 )
 

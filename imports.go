@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	. "github.com/brianvoe/gofakeit/v7"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jmoiron/sqlx"
@@ -8,11 +10,12 @@ import (
 
 func InsertImports(db *sqlx.Tx, importsCount int, providerCount int) {
 	builder := sqlbuilder.PostgreSQL.NewInsertBuilder()
-	builder.InsertInto("imports").Cols("provider_id", "total_cost")
+	builder.InsertInto("imports").Cols("provider_id", "total_cost", "created_at")
 	for _ = range importsCount {
 		randomProvider := Number(1, providerCount)
-		cost := Float64Range(1_000_000, 100_000_000)
-		builder.Values(randomProvider, cost)
+		cost := Float64Range(25, 100)
+		createdAt := DateRange(time.Now().AddDate(0, -2, 0), time.Now())
+		builder.Values(randomProvider, cost, createdAt)
 	}
 	sql, args := builder.Build()
 	_, err := db.Exec(sql, args...)

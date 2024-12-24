@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	. "github.com/brianvoe/gofakeit/v7"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jmoiron/sqlx"
@@ -21,13 +23,14 @@ func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount 
 func insertInvoice(invoiceId int, employeeCount int, customerCount int) *sqlbuilder.InsertBuilder {
 	invoicesBuilder := sqlbuilder.PostgreSQL.NewInsertBuilder().
 		InsertInto("invoices").
-		Cols("id", "total", "employee_id", "customer_id")
+		Cols("id", "total", "employee_id", "customer_id", "created_at")
 	employeeId := Number(1, employeeCount)
 	customerId := Number(1, customerCount)
+	createdAt := DateRange(time.Now().AddDate(0, -2, 0), time.Now())
 	// TODO: add correct value
-	total := Price(1000, 10000)
+	total := Price(50, 200)
 
-	invoicesBuilder.Values(invoiceId, total, employeeId, customerId)
+	invoicesBuilder.Values(invoiceId, total, employeeId, customerId, createdAt)
 	return invoicesBuilder
 }
 
