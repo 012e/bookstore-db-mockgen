@@ -7,7 +7,11 @@ create table employees
     email           varchar(255) not null,
     salary          money        not null check (salary >= 0::money),
     profile_picture text         not null,
+    address         text         not null,
+    phone_number    varchar(20)  not null,
+    birthday        date         not null,
     is_manager      boolean      not null default false,
+    gender          boolean      not null,
     password        varchar(255) not null
 );
 
