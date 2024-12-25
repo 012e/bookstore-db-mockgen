@@ -13,12 +13,19 @@ var cleanUpSQL string
 //go:embed scripts/schema.sql
 var schemaSQL string
 
+//go:embed scripts/startup.sql
+var startupSQL string
+
 func CleanUp(db *sqlx.DB) {
 	db.MustExec(cleanUpSQL)
 }
 
 func InitSchema(db *sqlx.DB) {
 	db.MustExec(schemaSQL)
+}
+
+func StartUp(tx *sqlx.Tx) {
+	tx.MustExec(startupSQL)
 }
 
 // getRandomDistinctIntSlice generates a slice of 'count' distinct random integers between 'min' and 'max'

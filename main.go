@@ -80,7 +80,13 @@ func main() {
 	InsertPriceTypes(tx)
 	logrus.Info("inserting price")
 	InsertPrice(tx, itemCount)
+	StartUp(tx)
 
-	tx.Commit()
+	err = tx.Commit()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	defer db.Close()
 }
