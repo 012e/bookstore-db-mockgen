@@ -15,11 +15,11 @@ import (
 var (
 	employeeCount   = 30
 	itemCount       = 100
-	invoiceCount    = 50
+	invoiceCount    = 70
 	tagCount        = 10
 	providerCount   = 5
 	customerCount   = 50
-	importCount     = 30
+	importCount     = 80
 	importItemCount = 100
 )
 
@@ -80,6 +80,7 @@ func main() {
 	InsertPriceTypes(tx)
 	logrus.Info("inserting price")
 	InsertPrice(tx, itemCount)
+	logrus.Info("Running startup script")
 	StartUp(tx)
 
 	err = tx.Commit()

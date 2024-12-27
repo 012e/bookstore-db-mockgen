@@ -10,7 +10,7 @@ import (
 
 func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount int, customerCount int) {
 	for i := range invoiceCount {
-		invoicesBuilder := insertInvoice(i+1, employeeCount, customerCount)
+		invoicesBuilder := insertInvoice(employeeCount, customerCount)
 		sql, args := invoicesBuilder.Build()
 		tx.MustExec(sql, args...)
 
@@ -20,17 +20,17 @@ func InsertInvoices(tx *sqlx.Tx, invoiceCount int, itemCount int, employeeCount 
 	}
 }
 
-func insertInvoice(invoiceId int, employeeCount int, customerCount int) *sqlbuilder.InsertBuilder {
+func insertInvoice(employeeCount int, customerCount int) *sqlbuilder.InsertBuilder {
 	invoicesBuilder := sqlbuilder.PostgreSQL.NewInsertBuilder().
 		InsertInto("invoices").
-		Cols("id", "total", "employee_id", "customer_id", "created_at")
+		Cols("total", "employee_id", "customer_id", "created_at")
 	employeeId := Number(1, employeeCount)
 	customerId := Number(1, customerCount)
 	createdAt := DateRange(time.Now().AddDate(0, -2, 0), time.Now())
 	// TODO: add correct value
 	total := Price(50, 200)
 
-	invoicesBuilder.Values(invoiceId, total, employeeId, customerId, createdAt)
+	invoicesBuilder.Values(total, employeeId, customerId, createdAt)
 	return invoicesBuilder
 }
 
@@ -39,9 +39,9 @@ func insertInvoiceItem(invoiceId int, maxItemId int) *sqlbuilder.InsertBuilder {
 	invoicesItemsBuilder := sqlbuilder.PostgreSQL.NewInsertBuilder().
 		InsertInto("invoices_items").
 		Cols("invoice_id", "item_id", "quantity")
-	totalDistinctItems := Number(1, 30)
+	totalDistinctItems := Number(1, 5)
 	for _, itemId := range getRandomDistinctIntSlice(totalDistinctItems, 1, maxItemId) {
-		quantity := Number(1, 30)
+		quantity := Number(1, 5)
 		invoicesItemsBuilder.Values(invoiceId, itemId, quantity)
 	}
 	return invoicesItemsBuilder

@@ -13,7 +13,7 @@ func InsertImports(db *sqlx.Tx, importsCount int, providerCount int) {
 	builder.InsertInto("imports").Cols("provider_id", "total_cost", "created_at")
 	for _ = range importsCount {
 		randomProvider := Number(1, providerCount)
-		cost := Float64Range(25, 100)
+		cost := Float64Range(100, 350)
 		createdAt := DateRange(time.Now().AddDate(0, -2, 0), time.Now())
 		builder.Values(randomProvider, cost, createdAt)
 	}
